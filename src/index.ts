@@ -80,9 +80,13 @@ app.get("/commands", async (req, res) => {
 // create or update account with last seen timestamp
 app.post("/commands", async (req, res) => {
   const commandstring = req.body.command;
+  console.log(commandstring)
   if (commandstring) {
     const command = await prisma.commands.create({
-      data: { command: commandstring },
+      data: {
+        createdat: new Date(),
+        command: commandstring
+      },
     })
     return res.json(command);
   }
