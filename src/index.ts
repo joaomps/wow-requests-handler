@@ -67,7 +67,7 @@ app.delete("/accounts/", async (req, res) => {
 // get all commands
 app.get("/commands", async (req, res) => {
   console.log("Retrieving all commands");
-  const commands = await prisma.executions.findMany({
+  const commands = await prisma.runcommands.findMany({
     orderBy: { createdat: "desc" },
   });
   if (commands) {
@@ -99,7 +99,7 @@ app.post("/commands/", async (req, res) => {
   // return res.json({})
 
   if (commandstring) {
-    const command = await prisma.executions.create({
+    const command = await prisma.runcommands.create({
       data: {
         createdat: new Date(),
         execute: commandstring
