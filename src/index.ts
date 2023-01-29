@@ -84,8 +84,10 @@ app.post("/commands/", async (req, res) => {
   console.log(commandstring)
   if (commandstring) {
     const command = await prisma.commands.create({
-      createdat: new Date(),
-      command: commandstring
+      data: {
+        createdat: new Date(),
+        command: commandstring
+      }
     })
     return res.json(command);
   }
