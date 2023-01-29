@@ -66,7 +66,6 @@ app.delete("/accounts/", async (req, res) => {
 
 // get all commands
 app.get("/commands", async (req, res) => {
-  console.log("Retrieving all commands");
   const commands = await prisma.runcommands.findMany({
     orderBy: { id: "desc" },
   });
@@ -81,23 +80,7 @@ app.get("/commands", async (req, res) => {
 // add a command
 // create or update account with last seen timestamp
 app.post("/commands/", async (req, res) => {
-  console.log("Adding a command");
   const commandstring = req.body.command;
-  // if (commandstring) {
-  //   const upsertCommand = await prisma.commands.upsert({
-  //     where: {
-  //       'command': 'ISTO NUNCA VAI DAR CERTO CRLH',
-  //     },
-  //     update: { command: commandstring },
-  //     create: {
-  //       createdat: new Date(),
-  //       command: commandstring,
-  //     },
-  //   })
-  //   return res.json(upsertCommand);
-  // }
-  // return res.json({})
-
   if (commandstring) {
     const command = await prisma.runcommands.create({
       data: {
@@ -109,14 +92,14 @@ app.post("/commands/", async (req, res) => {
   return res.json({})
 });
 
-// // delete commands
-// app.delete("/commands/", async (req, res) => {
-//   const commandstring = req.body.command;
-//   await prisma.commands.delete({
-//     where: { command: commandstring },
-//   });
-//   return res.send({ status: "ok" });
-// })
+// delete commands
+app.delete("/commands/", async (req, res) => {
+  const commandstring = req.body.command;
+  await prisma.runcommands.delete({
+    where: { command: commandstring },
+  });
+  return res.send({ status: "ok" });
+})
 
 
 app.listen(Number(port), "0.0.0.0", () => {
