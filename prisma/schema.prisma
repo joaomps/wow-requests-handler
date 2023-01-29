@@ -27,5 +27,5 @@ model account {
 model commands {
   id        String   @id @default(uuid())
   createdat DateTime @default(now())
-  command   String
+  execute   String
 }
