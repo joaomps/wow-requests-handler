@@ -10,6 +10,28 @@ app.use(express.json());
 app.use(express.raw({ type: "application/vnd.custom-type" }));
 app.use(express.text({ type: "text/html" }));
 
+
+// own methods
+// get all accounts
+app.get("/accounts", async (req, res) => {
+  const accounts = await prisma.accounts.findMany({
+    orderBy: { lastSeen: "desc" },
+  });
+
+  res.json(accounts);
+});
+
+// get specific account
+app.get("/accounts/:account", async (req, res) => {
+  const account = req.params.account;
+  const accountFound = await prisma.accounts.findUnique({
+    where: { account },
+  });
+
+  return res.json(accountFound);
+});
+
+
 app.get("/todos", async (req, res) => {
   const todos = await prisma.todo.findMany({
     orderBy: { createdAt: "desc" },

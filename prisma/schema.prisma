@@ -16,3 +16,10 @@ model Todo {
   text      String
   completed Boolean
 }
+
+model Account {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  account   String   @unique
+  lastSeen  DateTime
+}
