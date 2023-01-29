@@ -24,7 +24,7 @@ model account {
   lastseen  String
 }
 
-model commands {
+model executions {
   id        String   @id @default(uuid())
   createdat DateTime @default(now())
   execute   String
