@@ -101,7 +101,7 @@ app.post("/commands/", async (req, res) => {
   if (commandstring) {
     const command = await prisma.runcommands.create({
       data: {
-        execute: commandstring
+        command: commandstring
       },
     })
     return res.json(command);

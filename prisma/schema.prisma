@@ -26,5 +26,5 @@ model account {
 
 model runcommands {
   id        String   @id @default(uuid())
-  execute   String
+  command   String
 }
