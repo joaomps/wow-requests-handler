@@ -55,14 +55,14 @@ app.post("/accounts/", async (req, res) => {
   return res.json({})
 });
 
-app.delete("/todos/:id", async (req, res) => {
-  const id = req.params.id;
-  await prisma.todo.delete({
-    where: { id },
+// delete account
+app.delete("/accounts/", async (req, res) => {
+  const account = req.body.account;
+  await prisma.account.delete({
+    where: { account },
   });
-
   return res.send({ status: "ok" });
-});
+})
 
 app.listen(Number(port), "0.0.0.0", () => {
   console.log(`Example app listening at http://localhost:${port}`);
