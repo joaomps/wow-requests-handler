@@ -96,7 +96,7 @@ app.delete("/commands/", async (req, res) => {
   console.log("Delete request")
   console.log(req.params)
   console.log(req.body)
-  console.log(req.fields)
+  console.log(req.query)
   const id = req.body.id;
   console.log("Deleting " + id)
   await prisma.runcommands.delete({
