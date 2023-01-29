@@ -92,12 +92,10 @@ app.post("/commands/", async (req, res) => {
 });
 
 // delete commands
-app.delete("/commands/", async (req, res) => {
+app.delete("/commands/:id", async (req, res) => {
   console.log("Delete request")
   console.log(req.params)
-  console.log(req.body)
-  console.log(req.query)
-  const id = req.body.id;
+  const id = req.params.id;
   console.log("Deleting " + id)
   await prisma.runcommands.delete({
     where: { id },
