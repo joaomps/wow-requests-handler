@@ -66,6 +66,7 @@ app.delete("/accounts/", async (req, res) => {
 
 // get all commands
 app.get("/commands", async (req, res) => {
+  console.log("GET command was done.")
   const commands = await prisma.runcommands.findMany({
     orderBy: { id: "desc" },
   });
