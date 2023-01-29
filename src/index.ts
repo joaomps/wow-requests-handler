@@ -78,7 +78,8 @@ app.get("/commands", async (req, res) => {
 
 // add a command
 // create or update account with last seen timestamp
-app.post("/commands", async (req, res) => {
+app.post("/commands/", async (req, res) => {
+  console.log(req.body)
   const commandstring = req.body.command;
   console.log(commandstring)
   if (commandstring) {
