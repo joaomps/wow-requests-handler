@@ -18,7 +18,7 @@ app.get("/accounts", async (req, res) => {
     orderBy: { lastseen: "desc" },
   });
   if (accounts) {
-    res.json(accounts);
+    return res.json(accounts);
   }
 
   return res.json({})
