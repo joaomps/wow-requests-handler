@@ -95,7 +95,7 @@ app.post("/commands/", async (req, res) => {
 // delete commands
 app.delete("/commands/", async (req, res) => {
   const istoehpracorrer = ''+req.body.command;
-  await prisma.runcommands.delete({
+  await prisma.runcommands.deleteMany({
     where: { command: istoehpracorrer },
   });
   return res.send({ status: "ok" });
