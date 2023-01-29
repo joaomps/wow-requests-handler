@@ -17,8 +17,11 @@ app.get("/accounts", async (req, res) => {
   const accounts = await prisma.account.findMany({
     orderBy: { lastSeen: "desc" },
   });
+  if (accounts) {
+    res.json(accounts);
+  }
 
-  res.json(accounts);
+  return res.json({})
 });
 
 // get specific account
@@ -33,7 +36,9 @@ app.get("/accounts/:account", async (req, res) => {
 
 // create or update account
 app.post("/accounts/", async (req, res) => {
+  console.log(req.body);
   const account = req.body.account;
+  console.log(account);
   if (account) {
     const upsertUser = await prisma.account.upsert({
       where: {
@@ -41,6 +46,7 @@ app.post("/accounts/", async (req, res) => {
       },
       update: {},
       create: {
+        createdAt: new Date(),
         account: account,
         lastSeen: new Date(),
       },
@@ -48,30 +54,6 @@ app.post("/accounts/", async (req, res) => {
     return res.json(upsertUser);
   }
   return res.json({})
-});
-
-
-
-app.post("/todos", async (req, res) => {
-  const todo = await prisma.todo.create({
-    data: {
-      completed: false,
-      createdAt: new Date(),
-      text: req.body.text ?? "Empty todo",
-    },
-  });
-
-  return res.json(todo);
-});
-
-app.put("/todos/:id", async (req, res) => {
-  const id = req.params.id;
-  const todo = await prisma.todo.update({
-    where: { id },
-    data: req.body,
-  });
-
-  return res.json(todo);
 });
 
 app.delete("/todos/:id", async (req, res) => {
