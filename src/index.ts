@@ -34,21 +34,19 @@ app.get("/accounts/:account", async (req, res) => {
   return res.json(accountFound);
 });
 
-// create or update account
+// create or update account with last seen timestamp
 app.post("/accounts/", async (req, res) => {
-  console.log(req.body);
   const account = req.body.account;
-  console.log(account);
   if (account) {
     const upsertUser = await prisma.account.upsert({
       where: {
         account: account,
       },
-      update: {},
+      update: { lastseen: Date.now() },
       create: {
-        createdat: new Date(),
+        createdat: Date.now(),
         account: account,
-        lastseen: new Date(),
+        lastseen: Date.now(),
       },
     })
     return res.json(upsertUser);
