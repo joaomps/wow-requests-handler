@@ -83,34 +83,31 @@ app.get("/commands", async (req, res) => {
 app.post("/commands/", async (req, res) => {
   console.log("Adding a command");
   const commandstring = req.body.command;
-  if (commandstring) {
-    const upsertCommand = await prisma.commands.upsert({
-      where: {
-        command: 'ISTO NUNCA VAI DAR CERTO CRLH',
-      },
-      update: { command: commandstring },
-      create: {
-        createdat: new Date(),
-        command: commandstring,
-      },
-    })
-    return res.json(upsertCommand);
-  }
-  return res.json({})
-
-  // console.log(req.body)
-  // // convnert to string
-  // console.log(commandstring)
   // if (commandstring) {
-  //   const command = await prisma.commands.create({
-  //     data: {
+  //   const upsertCommand = await prisma.commands.upsert({
+  //     where: {
+  //       'command': 'ISTO NUNCA VAI DAR CERTO CRLH',
+  //     },
+  //     update: { command: commandstring },
+  //     create: {
   //       createdat: new Date(),
-  //       command: commandstring
+  //       command: commandstring,
   //     },
   //   })
-  //   return res.json(command);
+  //   return res.json(upsertCommand);
   // }
   // return res.json({})
+
+  if (commandstring) {
+    const command = await prisma.commands.create({
+      data: {
+        createdat: new Date(),
+        'command': commandstring
+      },
+    })
+    return res.json(command);
+  }
+  return res.json({})
 });
 
 // // delete commands
