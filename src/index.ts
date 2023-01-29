@@ -32,20 +32,22 @@ app.get("/accounts/:account", async (req, res) => {
 });
 
 // create or update account
-app.put("/accounts/", async (req, res) => {
-  const account = req.params.account;
-  const upsertUser = await prisma.account.upsert({
-    where: {
-      account: account,
-    },
-    update: {},
-    create: {
-      account: account,
-      lastSeen: new Date(),
-    },
-  })
-
-  return res.json(upsertUser);
+app.post("/accounts/", async (req, res) => {
+  const account = req.body.account;
+  if (account) {
+    const upsertUser = await prisma.account.upsert({
+      where: {
+        account: account,
+      },
+      update: {},
+      create: {
+        account: account,
+        lastSeen: new Date(),
+      },
+    })
+    return res.json(upsertUser);
+  }
+  return res.json({})
 });
 
 
@@ -82,5 +84,5 @@ app.delete("/todos/:id", async (req, res) => {
 });
 
 app.listen(Number(port), "0.0.0.0", () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Example app listening at http://localhost:${port}`);
 });
