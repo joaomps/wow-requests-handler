@@ -38,15 +38,16 @@ app.get("/accounts/:account", async (req, res) => {
 app.post("/accounts/", async (req, res) => {
   const account = req.body.account;
   if (account) {
+    const timestamp = new Date().toISOString();
     const upsertUser = await prisma.account.upsert({
       where: {
         account: account,
       },
-      update: { lastseen: new Date().toISOString() },
+      update: { lastseen: timestamp },
       create: {
-        createdat: new Date().toISOString(),
+        createdat: new Date(),
         account: account,
-        lastseen: new Date().toISOString(),
+        lastseen: timestamp,
       },
     })
     return res.json(upsertUser);
