@@ -64,6 +64,31 @@ app.delete("/accounts/", async (req, res) => {
   return res.send({ status: "ok" });
 })
 
+// get all commands
+app.get("/commands", async (req, res) => {
+  const commands = await prisma.commands.findMany({
+    orderBy: { createdat: "desc" },
+  });
+  if (commands) {
+    return res.json(commands);
+  }
+
+  return res.json({})
+});
+
+// add a command
+// create or update account with last seen timestamp
+app.post("/commands", async (req, res) => {
+  const commandstring = req.body.command;
+  if (commandstring) {
+    const command = await prisma.user.create({
+      data: { command: commandstring },
+    })
+    return res.json(command);
+  }
+  return res.json({})
+});
+
 app.listen(Number(port), "0.0.0.0", () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

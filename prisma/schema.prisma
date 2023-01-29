@@ -23,3 +23,9 @@ model account {
   account   String   @unique
   lastseen  String
 }
+
+model commands {
+  id        String   @id @default(uuid())
+  createdat DateTime @default(now())
+  command   String
+}
