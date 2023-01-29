@@ -14,7 +14,7 @@ app.use(express.text({ type: "text/html" }));
 // own methods
 // get all accounts
 app.get("/accounts", async (req, res) => {
-  const accounts = await prisma.accounts.findMany({
+  const accounts = await prisma.account.findMany({
     orderBy: { lastSeen: "desc" },
   });
 
@@ -24,7 +24,7 @@ app.get("/accounts", async (req, res) => {
 // get specific account
 app.get("/accounts/:account", async (req, res) => {
   const account = req.params.account;
-  const accountFound = await prisma.accounts.findUnique({
+  const accountFound = await prisma.account.findUnique({
     where: { account },
   });
 
