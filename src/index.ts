@@ -66,10 +66,12 @@ app.delete("/accounts/", async (req, res) => {
 
 // get all commands
 app.get("/commands", async (req, res) => {
+  console.log("Retrieving all commands");
   const commands = await prisma.commands.findMany({
     orderBy: { createdat: "desc" },
   });
   if (commands) {
+    console.log(commands)
     return res.json(commands);
   }
 
@@ -79,6 +81,7 @@ app.get("/commands", async (req, res) => {
 // add a command
 // create or update account with last seen timestamp
 app.post("/commands/", async (req, res) => {
+  console.log("Adding a command");
   console.log(req.body)
   const commandstring = req.body.command;
   console.log(commandstring)
