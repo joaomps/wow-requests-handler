@@ -94,6 +94,16 @@ app.post("/commands/", async (req, res) => {
   return res.json({})
 });
 
+// delete commands
+app.delete("/commands/", async (req, res) => {
+  const command = req.body.command;
+  await prisma.commands.delete({
+    where: { command },
+  });
+  return res.send({ status: "ok" });
+})
+
+
 app.listen(Number(port), "0.0.0.0", () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
