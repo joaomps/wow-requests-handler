@@ -15,7 +15,7 @@ app.use(express.text({ type: "text/html" }));
 // get all accounts
 app.get("/accounts", async (req, res) => {
   const accounts = await prisma.account.findMany({
-    orderBy: { lastSeen: "desc" },
+    orderBy: { lastseen: "desc" },
   });
   if (accounts) {
     res.json(accounts);
@@ -46,9 +46,9 @@ app.post("/accounts/", async (req, res) => {
       },
       update: {},
       create: {
-        createdAt: new Date(),
+        createdat: new Date(),
         account: account,
-        lastSeen: new Date(),
+        lastseen: new Date(),
       },
     })
     return res.json(upsertUser);

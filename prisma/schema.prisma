@@ -17,9 +17,9 @@ model Todo {
   completed Boolean
 }
 
-model Account {
+model account {
   id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
+  createdat DateTime @default(now())
   account   String   @unique
-  lastSeen  DateTime
+  lastseen  DateTime
 }
