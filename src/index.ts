@@ -78,30 +78,30 @@ app.get("/commands", async (req, res) => {
 
 // add a command
 // create or update account with last seen timestamp
-app.post("/commands/", async (req, res) => {
-  console.log(req.body)
-  const commandstring = req.body.command;
-  console.log(commandstring)
-  if (commandstring) {
-    const command = await prisma.commands.create({
-      data: {
-        createdat: new Date(),
-        command: commandstring
-      },
-    })
-    return res.json(command);
-  }
-  return res.json({})
-});
+// app.post("/commands/", async (req, res) => {
+//   console.log(req.body)
+//   const commandstring = req.body.command;
+//   console.log(commandstring)
+//   if (commandstring) {
+//     const command = await prisma.commands.create({
+//       data: {
+//         createdat: new Date(),
+//         command: commandstring
+//       },
+//     })
+//     return res.json(command);
+//   }
+//   return res.json({})
+// });
 
-// delete commands
-app.delete("/commands/", async (req, res) => {
-  const commandstring = req.body.command;
-  await prisma.commands.delete({
-    where: { command: commandstring },
-  });
-  return res.send({ status: "ok" });
-})
+// // delete commands
+// app.delete("/commands/", async (req, res) => {
+//   const commandstring = req.body.command;
+//   await prisma.commands.delete({
+//     where: { command: commandstring },
+//   });
+//   return res.send({ status: "ok" });
+// })
 
 
 app.listen(Number(port), "0.0.0.0", () => {
