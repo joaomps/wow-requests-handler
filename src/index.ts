@@ -42,11 +42,11 @@ app.post("/accounts/", async (req, res) => {
       where: {
         account: account,
       },
-      update: { lastseen: Date.now() },
+      update: { lastseen: +new Date },
       create: {
-        createdat: Date.now(),
+        createdat: +new Date,
         account: account,
-        lastseen: Date.now(),
+        lastseen: +new Date,
       },
     })
     return res.json(upsertUser);
