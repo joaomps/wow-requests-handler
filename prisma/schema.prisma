@@ -25,14 +25,14 @@ model account {
 }
 
 model availableaccount {
-  id        Int   @id
+  id        Int   @id @default(autoincrement())
   accountname   String   @unique
   pathtorun  String
   devicename String
 }
 
 model startjob {
-  id Int @id
+  id Int @id @default(autoincrement())
   accounttorun String
   pathtorun String
   devicename String
