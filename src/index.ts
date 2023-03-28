@@ -112,7 +112,7 @@ app.get('/available-accounts', async (req, res) => {
                 account: true
               }
             })
-            .then(rows => rows.map(row => row.accountName))
+            .then(rows => rows.map(row => row.accountname))
           }
         }
       }
