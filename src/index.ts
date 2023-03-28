@@ -130,9 +130,9 @@ app.post('/createjob', async (req, res) => {
     const { accounttorun, pathtorun, devicename } = req.body.job;
     const newJob = await prisma.startjob.create({
       data: {
-        accounttorun,
-        pathtorun,
-        devicename
+        accounttorun: accounttorun,
+        pathtorun: pathtorun,
+        devicename: devicename
       }
     });
     res.json(newJob);
@@ -147,7 +147,7 @@ app.delete('/deletejob/:accounttorun', async (req, res) => {
     const { accounttorun } = req.params;
     const deletedJob = await prisma.startjob.delete({
       where: {
-        accounttorun
+        accounttorun: accounttorun
       }
     });
     res.json(deletedJob);
