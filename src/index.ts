@@ -143,11 +143,20 @@ app.post('/createjob', async (req, res) => {
 });
 
 app.delete('/deletejob/:accounttorun', async (req, res) => {
-  const accounttorun = req.params;
-  await prisma.startjob.delete({
-    where: { accounttorun },
-  });
-  return res.send({ status: "ok" });
+  try {
+    const { accounttorun } = req.params;
+    const deletedJob = await prisma.startjob.delete({
+      where: {
+        accounttorun: {
+          equals: accounttorun
+        }
+      }
+    });
+    res.json(deletedJob);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal server error');
+  }
 });
 
 app.listen(Number(port), "0.0.0.0", () => {
