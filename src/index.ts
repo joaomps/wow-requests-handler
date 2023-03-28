@@ -124,6 +124,17 @@ app.get('/available-accounts', async (req, res) => {
   }
 });
 
+// get jobs
+app.get('/getjobs', async (req, res) => {
+  try {
+    const jobs = await prisma.startjob.findMany();
+    res.json(jobs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal server error');
+  }
+});
+
 // create jobs
 app.post('/createjob', async (req, res) => {
   try {
