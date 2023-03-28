@@ -142,14 +142,12 @@ app.post('/createjob', async (req, res) => {
   }
 });
 
-app.delete('/deletejob/:accounttorun', async (req, res) => {
+app.delete('/deletejob/:id', async (req, res) => {
   try {
-    const { accounttorun } = req.params;
+    const { id } = req.params;
     const deletedJob = await prisma.startjob.delete({
       where: {
-        accounttorun: {
-          equals: accounttorun
-        }
+        id: Number(id)
       }
     });
     res.json(deletedJob);
