@@ -112,7 +112,7 @@ app.get('/available-accounts', async (req, res) => {
                 account: true
               }
             })
-            .then(rows => rows.map(row => row.account))
+              .then(rows => rows.map(row => row.account))
           }
         }
       }
@@ -149,16 +149,22 @@ app.delete('/deletejob/:accounttorun', async (req, res) => {
   // });
   // return res.send({ status: "ok" });
 
-  try {
-    const accounttorun = req.params;
-    const deletedJob = await prisma.startjob.delete({
-      where: { accounttorun },
-    });
-    res.json(deletedJob);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal server error');
-  }
+  const accounttorun = req.params;
+  await prisma.startjob.delete({
+    where: { accounttorun },
+  });
+  return res.send({ status: "ok" });
+
+  // try {
+  //   const accounttorun = req.params;
+  //   const deletedJob = await prisma.startjob.delete({
+  //     where: { accounttorun },
+  //   });
+  //   res.json(deletedJob);
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).send('Internal server error');
+  // }
 });
 
 app.listen(Number(port), "0.0.0.0", () => {
