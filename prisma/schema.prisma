@@ -24,6 +24,12 @@ model account {
   lastseen  String
 }
 
+model availableaccount {
+  id        String   @id
+  accountname   String   @unique
+  pathtorun  String
+}
+
 model runcommands {
   id        String   @id @default(uuid())
   command   String

@@ -100,6 +100,30 @@ app.delete("/commands/:id", async (req, res) => {
   return res.send({ status: "ok" });
 })
 
+// get available accounts to retrieve path to run
+app.get('/available-accounts', async (req, res) => {
+  try {
+    const availableAccounts = await prisma.availableaccount.findMany({
+      where: {
+        NOT: {
+          accountname: {
+            in: await prisma.account.findMany({
+              select: {
+                account: true
+              }
+            })
+            .then(rows => rows.map(row => row.accountName))
+          }
+        }
+      }
+    });
+    res.json(availableAccounts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal server error');
+  }
+});
+
 
 app.listen(Number(port), "0.0.0.0", () => {
   console.log(`Example app listening at http://localhost:${port}`);
