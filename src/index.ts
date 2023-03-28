@@ -127,7 +127,11 @@ app.get('/available-accounts', async (req, res) => {
 // get jobs
 app.get('/getjobs', async (req, res) => {
   try {
-    const jobs = await prisma.startjob.findFirst();
+    const jobs = await prisma.startjob.findFirst({
+      orderBy: {
+        id: 'asc',
+      },
+    });
     res.json(jobs);
   } catch (error) {
     console.error(error);
