@@ -28,6 +28,14 @@ model availableaccount {
   id        Int   @id
   accountname   String   @unique
   pathtorun  String
+  devicename String
+}
+
+model startjob {
+  id Int @id
+  accounttorun String
+  pathtorun String
+  devicename String
 }
 
 model runcommands {

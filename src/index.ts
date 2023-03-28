@@ -124,6 +124,38 @@ app.get('/available-accounts', async (req, res) => {
   }
 });
 
+// create jobs
+app.post('/createjob', async (req, res) => {
+  try {
+    const { accounttorun, pathtorun, devicename } = req.body.job;
+    const newJob = await prisma.startjob.create({
+      data: {
+        accounttorun,
+        pathtorun,
+        devicename
+      }
+    });
+    res.json(newJob);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal server error');
+  }
+});
+
+app.delete('/deletejob/:accounttorun', async (req, res) => {
+  try {
+    const { accounttorun } = req.params;
+    const deletedJob = await prisma.startjob.delete({
+      where: {
+        accounttorun
+      }
+    });
+    res.json(deletedJob);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal server error');
+  }
+});
 
 app.listen(Number(port), "0.0.0.0", () => {
   console.log(`Example app listening at http://localhost:${port}`);
