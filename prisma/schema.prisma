@@ -25,7 +25,7 @@ model account {
 }
 
 model availableaccount {
-  id        String   @id
+  id        Int   @id
   accountname   String   @unique
   pathtorun  String
 }
