@@ -137,6 +137,7 @@ app.get("/available-accounts", async (req, res) => {
         },
       },
     });
+    console.log("Finished ", availableAccounts);
     res.json(availableAccounts);
   } catch (error) {
     console.error(error);
