@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import express from "express";
+import cors from "cors";
 
 const prisma = new PrismaClient();
 
@@ -9,7 +10,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.raw({ type: "application/vnd.custom-type" }));
 app.use(express.text({ type: "text/html" }));
-
+app.use(cors());
 
 // own methods
 // get all accounts
@@ -21,7 +22,7 @@ app.get("/accounts", async (req, res) => {
     return res.json(accounts);
   }
 
-  return res.json({})
+  return res.json({});
 });
 
 // get specific account
@@ -49,10 +50,10 @@ app.post("/accounts/", async (req, res) => {
         account: account,
         lastseen: timestamp,
       },
-    })
+    });
     return res.json(upsertUser);
   }
-  return res.json({})
+  return res.json({});
 });
 
 // delete account
@@ -62,7 +63,7 @@ app.delete("/accounts/", async (req, res) => {
     where: { account },
   });
   return res.send({ status: "ok" });
-})
+});
 
 // get all commands
 app.get("/commands", async (req, res) => {
@@ -73,7 +74,7 @@ app.get("/commands", async (req, res) => {
     return res.json(commands[0]);
   }
 
-  return res.json({})
+  return res.json({});
 });
 
 // add a command
@@ -83,12 +84,12 @@ app.post("/commands/", async (req, res) => {
   if (commandstring) {
     const command = await prisma.runcommands.create({
       data: {
-        command: commandstring
+        command: commandstring,
       },
-    })
+    });
     return res.json(command);
   }
-  return res.json({})
+  return res.json({});
 });
 
 // delete commands
@@ -98,77 +99,78 @@ app.delete("/commands/:id", async (req, res) => {
     where: { id },
   });
   return res.send({ status: "ok" });
-})
+});
 
 // get available accounts to retrieve path to run
-app.get('/available-accounts', async (req, res) => {
+app.get("/available-accounts", async (req, res) => {
   try {
     const availableAccounts = await prisma.availableaccount.findMany({
       where: {
         NOT: {
           accountname: {
-            in: await prisma.account.findMany({
-              select: {
-                account: true
-              }
-            })
-              .then(rows => rows.map(row => row.account))
-          }
-        }
-      }
+            in: await prisma.account
+              .findMany({
+                select: {
+                  account: true,
+                },
+              })
+              .then((rows) => rows.map((row) => row.account)),
+          },
+        },
+      },
     });
     res.json(availableAccounts);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Internal server error');
+    res.status(500).send("Internal server error");
   }
 });
 
 // get jobs
-app.get('/getjobs', async (req, res) => {
+app.get("/getjobs", async (req, res) => {
   try {
     const jobs = await prisma.startjob.findFirst({
       orderBy: {
-        id: 'asc',
+        id: "asc",
       },
     });
     res.json(jobs);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Internal server error');
+    res.status(500).send("Internal server error");
   }
 });
 
 // create jobs
-app.post('/createjob', async (req, res) => {
+app.post("/createjob", async (req, res) => {
   try {
     const { accounttorun, pathtorun, devicename } = req.body.job;
     const newJob = await prisma.startjob.create({
       data: {
         accounttorun: accounttorun,
         pathtorun: pathtorun,
-        devicename: devicename
-      }
+        devicename: devicename,
+      },
     });
     res.json(newJob);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Internal server error');
+    res.status(500).send("Internal server error");
   }
 });
 
-app.delete('/deletejob/:id', async (req, res) => {
+app.delete("/deletejob/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const deletedJob = await prisma.startjob.delete({
       where: {
-        id: Number(id)
-      }
+        id: Number(id),
+      },
     });
     res.json(deletedJob);
   } catch (error) {
     console.error(error);
-    res.status(500).send('Internal server error');
+    res.status(500).send("Internal server error");
   }
 });
 
