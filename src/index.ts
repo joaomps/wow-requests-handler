@@ -38,9 +38,11 @@ app.get("/accounts/:account", async (req, res) => {
 
 // create or update account with last seen timestamp
 app.post("/accounts/", async (req, res) => {
-  console.log(req.body);
   const account = req.body.account;
-  if (account) {
+  const image = req.body.image;
+
+  if (account && image.length == 0) {
+    console.log("Without image");
     const timestamp = new Date().toISOString();
     const upsertUser = await prisma.account.upsert({
       where: {
@@ -51,6 +53,24 @@ app.post("/accounts/", async (req, res) => {
         createdat: new Date(),
         account: account,
         lastseen: timestamp,
+      },
+    });
+    return res.json(upsertUser);
+  }
+
+  if (account && image.length > 0) {
+    console.log("With image");
+    const timestamp = new Date().toISOString();
+    const upsertUser = await prisma.account.upsert({
+      where: {
+        account: account,
+      },
+      update: { lastseen: timestamp, lastscreenshot: image },
+      create: {
+        createdat: new Date(),
+        account: account,
+        lastseen: timestamp,
+        lastscreenshot: image,
       },
     });
     return res.json(upsertUser);

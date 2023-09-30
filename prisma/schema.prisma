@@ -18,27 +18,28 @@ model Todo {
 }
 
 model account {
-  id        String   @id @default(uuid())
-  createdat DateTime @default(now())
-  account   String   @unique
-  lastseen  String
+  id             String   @id @default(uuid())
+  createdat      DateTime @default(now())
+  account        String   @unique
+  lastseen       String
+  lastscreenshot String
 }
 
 model availableaccount {
-  id        Int   @id @default(autoincrement())
-  accountname   String   @unique
-  pathtorun  String
-  devicename String
+  id          Int    @id @default(autoincrement())
+  accountname String @unique
+  pathtorun   String
+  devicename  String
 }
 
 model startjob {
-  id Int @id @default(autoincrement())
+  id           Int    @id @default(autoincrement())
   accounttorun String
-  pathtorun String
-  devicename String
+  pathtorun    String
+  devicename   String
 }
 
 model runcommands {
-  id        String   @id @default(uuid())
-  command   String
+  id      String @id @default(uuid())
+  command String
 }
