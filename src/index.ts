@@ -119,6 +119,16 @@ app.delete("/commands/:id", async (req, res) => {
   return res.send({ status: "ok" });
 });
 
+// get all available accounts
+app.get("/all-accounts", async (req, res) => {
+  const accounts = await prisma.availableaccount.findMany({});
+  if (accounts) {
+    return res.json(accounts);
+  }
+
+  return res.json({});
+});
+
 // get available accounts to retrieve path to run
 app.get("/available-accounts", async (req, res) => {
   try {
