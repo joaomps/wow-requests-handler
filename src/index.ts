@@ -53,6 +53,7 @@ app.post("/accounts/", async (req, res) => {
         createdat: new Date(),
         account: account,
         lastseen: timestamp,
+        lastscreenshot: "",
       },
     });
     return res.json(upsertUser);
