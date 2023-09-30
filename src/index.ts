@@ -37,6 +37,7 @@ app.get("/accounts/:account", async (req, res) => {
 
 // create or update account with last seen timestamp
 app.post("/accounts/", async (req, res) => {
+  console.log(req.body);
   const account = req.body.account;
   if (account) {
     const timestamp = new Date().toISOString();
