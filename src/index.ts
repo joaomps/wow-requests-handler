@@ -42,7 +42,6 @@ app.post("/accounts/", async (req, res) => {
   const image = req.body.image;
 
   if (account && image) {
-    console.log("With image");
     const timestamp = new Date().toISOString();
     const upsertUser = await prisma.account.upsert({
       where: {
@@ -58,7 +57,6 @@ app.post("/accounts/", async (req, res) => {
     });
     return res.json(upsertUser);
   } else {
-    console.log("Without image");
     const timestamp = new Date().toISOString();
     const upsertUser = await prisma.account.upsert({
       where: {
