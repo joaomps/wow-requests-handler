@@ -11,11 +11,12 @@ generator client {
 }
 
 model account {
-  id             String   @id @default(uuid())
-  createdat      DateTime @default(now())
-  account        String   @unique
-  lastseen       String
-  lastscreenshot String
+  id                    String   @id @default(uuid())
+  createdat             DateTime @default(now())
+  account               String   @unique
+  lastseen              String
+  lastscreenshot        String
+  lastscreenshottakenat String
 }
 
 model availableaccount {

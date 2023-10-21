@@ -47,12 +47,17 @@ app.post("/accounts/", async (req, res) => {
       where: {
         account: account,
       },
-      update: { lastseen: timestamp, lastscreenshot: image },
+      update: {
+        lastseen: timestamp,
+        lastscreenshot: image,
+        lastscreenshottakenat: timestamp,
+      },
       create: {
         createdat: new Date(),
         account: account,
         lastseen: timestamp,
         lastscreenshot: image,
+        lastscreenshottakenat: timestamp,
       },
     });
     return res.json(upsertUser);
@@ -68,6 +73,7 @@ app.post("/accounts/", async (req, res) => {
         account: account,
         lastseen: timestamp,
         lastscreenshot: "",
+        lastscreenshottakenat: "",
       },
     });
     return res.json(upsertUser);
