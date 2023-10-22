@@ -51,22 +51,21 @@ app.post("/accounts/", async (req, res) => {
 
     const resizedImageBase64 = resizedBuffer.toString("base64");
 
-    const timestamp = new Date().toUTCString();
     const upsertUser = await prisma.account.upsert({
       where: {
         account: account,
       },
       update: {
-        lastseen: timestamp,
+        lastseen: new Date().toISOString(),
         lastscreenshot: resizedImageBase64,
-        lastscreenshottakenat: timestamp,
+        lastscreenshottakenat: new Date().toUTCString(),
       },
       create: {
         createdat: new Date(),
         account: account,
-        lastseen: timestamp,
+        lastseen: new Date().toISOString(),
         lastscreenshot: resizedImageBase64,
-        lastscreenshottakenat: timestamp,
+        lastscreenshottakenat: new Date().toUTCString(),
       },
     });
     return res.json(upsertUser);
