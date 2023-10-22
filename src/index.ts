@@ -42,18 +42,16 @@ app.post("/accounts/", async (req, res) => {
   const account = req.body.account;
   const image = req.body.image;
 
-  console.log("Arrived request ");
   if (account && image) {
     const imageAsBuffer = Buffer.from(image, "base64");
 
     const resizedBuffer = await sharp(imageAsBuffer)
-      .resize(800, 600, { fit: "inside" })
+      .resize(1920, 1080, { fit: "inside" })
       .toBuffer();
 
     const resizedImageBase64 = resizedBuffer.toString("base64");
 
-    const timestamp = new Date().toISOString();
-    console.log("Trying to save img");
+    const timestamp = new Date().toUTCString();
     const upsertUser = await prisma.account.upsert({
       where: {
         account: account,
