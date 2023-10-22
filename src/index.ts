@@ -1,16 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 import express from "express";
 import cors from "cors";
+import sharp from "sharp";
 
 const prisma = new PrismaClient();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(express.json({ limit: "50mb" }));
+app.use(express.json({ limit: "100mb" }));
 app.use(express.raw({ type: "application/vnd.custom-type" }));
 app.use(express.text({ type: "text/html" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(express.urlencoded({ limit: "100mb", extended: true }));
 app.use(cors());
 
 // own methods
@@ -39,24 +40,32 @@ app.get("/accounts/:account", async (req, res) => {
 // create or update account with last seen timestamp
 app.post("/accounts/", async (req, res) => {
   const account = req.body.account;
-  const image = req.body.image;
+  const image = Buffer.from(req.body.image, "base64");
 
+  const resizedBuffer = await sharp(image)
+    .resize(800, 600, { fit: "inside" })
+    .toBuffer();
+
+  const resizedImageBase64 = resizedBuffer.toString("base64");
+
+  console.log("Arrived request ");
   if (account && image) {
     const timestamp = new Date().toISOString();
+    console.log("Trying to save img");
     const upsertUser = await prisma.account.upsert({
       where: {
         account: account,
       },
       update: {
         lastseen: timestamp,
-        lastscreenshot: image,
+        lastscreenshot: resizedImageBase64,
         lastscreenshottakenat: timestamp,
       },
       create: {
         createdat: new Date(),
         account: account,
         lastseen: timestamp,
-        lastscreenshot: image,
+        lastscreenshot: resizedImageBase64,
         lastscreenshottakenat: timestamp,
       },
     });
