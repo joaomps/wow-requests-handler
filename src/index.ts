@@ -40,16 +40,18 @@ app.get("/accounts/:account", async (req, res) => {
 // create or update account with last seen timestamp
 app.post("/accounts/", async (req, res) => {
   const account = req.body.account;
-  const image = Buffer.from(req.body.image, "base64");
-
-  const resizedBuffer = await sharp(image)
-    .resize(800, 600, { fit: "inside" })
-    .toBuffer();
-
-  const resizedImageBase64 = resizedBuffer.toString("base64");
+  const image = req.body.image;
 
   console.log("Arrived request ");
   if (account && image) {
+    const imageAsBuffer = Buffer.from(image, "base64");
+
+    const resizedBuffer = await sharp(imageAsBuffer)
+      .resize(800, 600, { fit: "inside" })
+      .toBuffer();
+
+    const resizedImageBase64 = resizedBuffer.toString("base64");
+
     const timestamp = new Date().toISOString();
     console.log("Trying to save img");
     const upsertUser = await prisma.account.upsert({
