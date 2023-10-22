@@ -46,7 +46,7 @@ app.post("/accounts/", async (req, res) => {
     const imageAsBuffer = Buffer.from(image, "base64");
 
     const resizedBuffer = await sharp(imageAsBuffer)
-      .resize(1920, 1080, { fit: "inside" })
+      .resize(1440, 900, { fit: "inside" })
       .toBuffer();
 
     const resizedImageBase64 = resizedBuffer.toString("base64");
