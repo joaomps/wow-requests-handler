@@ -78,14 +78,12 @@ app.post("/accounts/", async (req, res) => {
       update: {
         lastseen: new Date().toISOString(),
         status: req.body.status ? req.body.status : "Online",
-        break_time: req.body.break_time ? req.body.break_time : 0,
         current_gold: req.body.current_gold ? req.body.current_gold : "0",
       },
       create: {
         account: account,
         lastseen: new Date().toISOString(),
         status: req.body.status ? req.body.status : "Online",
-        break_time: req.body.break_time ? req.body.break_time : 0,
         current_gold: req.body.current_gold ? req.body.current_gold : "0",
       },
     });
