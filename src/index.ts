@@ -59,29 +59,34 @@ app.post("/accounts/", async (req, res) => {
         lastseen: new Date().toISOString(),
         lastscreenshot: resizedImageBase64,
         lastscreenshottakenat: new Date().toUTCString(),
+        status: req.body.status ? req.body.status : "Online",
       },
       create: {
-        createdat: new Date(),
         account: account,
         lastseen: new Date().toISOString(),
         lastscreenshot: resizedImageBase64,
         lastscreenshottakenat: new Date().toUTCString(),
+        status: req.body.status ? req.body.status : "Online",
       },
     });
     return res.json(upsertUser);
   } else {
-    const timestamp = new Date().toISOString();
     const upsertUser = await prisma.account.upsert({
       where: {
         account: account,
       },
-      update: { lastseen: timestamp },
+      update: {
+        lastseen: new Date().toISOString(),
+        status: req.body.status ? req.body.status : "Online",
+        break_time: req.body.break_time ? req.body.break_time : 0,
+        current_gold: req.body.current_gold ? req.body.current_gold : "0",
+      },
       create: {
-        createdat: new Date(),
         account: account,
-        lastseen: timestamp,
-        lastscreenshot: "",
-        lastscreenshottakenat: "",
+        lastseen: new Date().toISOString(),
+        status: req.body.status ? req.body.status : "Online",
+        break_time: req.body.break_time ? req.body.break_time : 0,
+        current_gold: req.body.current_gold ? req.body.current_gold : "0",
       },
     });
     return res.json(upsertUser);
@@ -161,7 +166,6 @@ app.get("/available-accounts", async (req, res) => {
         },
       },
     });
-    console.log("Finished ", availableAccounts);
     res.json(availableAccounts);
   } catch (error) {
     console.error(error);
@@ -218,5 +222,5 @@ app.delete("/deletejob/:id", async (req, res) => {
 });
 
 app.listen(Number(port), "0.0.0.0", () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Started server on http://localhost:${port}`);
 });

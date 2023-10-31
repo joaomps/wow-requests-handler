@@ -3,7 +3,8 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:sV73IIQc7nQQlP9uxjyP@containers-us-west-187.railway.app:7501/railway"
 }
 
 generator client {
@@ -11,12 +12,14 @@ generator client {
 }
 
 model account {
-  id                    String   @id @default(uuid())
-  createdat             DateTime @default(now())
-  account               String   @unique
-  lastseen              String
-  lastscreenshot        String
-  lastscreenshottakenat String
+  id                    Int    @id @default(autoincrement())
+  account               String @unique
+  lastseen              String @default("")
+  lastscreenshot        String @default("")
+  lastscreenshottakenat String @default("")
+  status                String @default("Offline")
+  break_time            Int    @default(0)
+  current_gold          String @default("0")
 }
 
 model availableaccount {
