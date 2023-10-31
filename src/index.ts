@@ -79,12 +79,14 @@ app.post("/accounts/", async (req, res) => {
         lastseen: new Date().toISOString(),
         status: req.body.status ? req.body.status : "Online",
         current_gold: req.body.current_gold ? req.body.current_gold : "0",
+        break_time: req.body.break_time,
       },
       create: {
         account: account,
         lastseen: new Date().toISOString(),
         status: req.body.status ? req.body.status : "Online",
         current_gold: req.body.current_gold ? req.body.current_gold : "0",
+        break_time: req.body.break_time,
       },
     });
     return res.json(upsertUser);
