@@ -221,6 +221,16 @@ app.delete("/deletejob/:id", async (req, res) => {
   }
 });
 
+app.use(function (
+  err: any,
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) {
+  console.error(req.body, err.stack);
+  res.status(500).send("Something broke!");
+});
+
 app.listen(Number(port), "0.0.0.0", () => {
   console.log(`Started server on http://localhost:${port}`);
 });
