@@ -2,19 +2,18 @@ import { PrismaClient } from "@prisma/client";
 import express from "express";
 import cors from "cors";
 import sharp from "sharp";
+require("express-async-errors");
 
 const prisma = new PrismaClient();
-
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(express.json({ limit: "100mb" }));
-app.use(express.raw({ type: "application/vnd.custom-type" }));
-app.use(express.text({ type: "text/html" }));
-app.use(express.urlencoded({ limit: "100mb", extended: true }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: false }));
 app.use(cors());
+// app.use(express.raw({ type: "application/vnd.custom-type" }));
+// app.use(express.text({ type: "text/html" }));
 
-// own methods
 // get all accounts
 app.get("/accounts", async (req, res) => {
   const accounts = await prisma.account.findMany({
@@ -150,75 +149,55 @@ app.get("/all-accounts", async (req, res) => {
 
 // get available accounts to retrieve path to run
 app.get("/available-accounts", async (req, res) => {
-  try {
-    const availableAccounts = await prisma.availableaccount.findMany({
-      where: {
-        NOT: {
-          accountname: {
-            in: await prisma.account
-              .findMany({
-                select: {
-                  account: true,
-                },
-              })
-              .then((rows) => rows.map((row) => row.account)),
-          },
+  const availableAccounts = await prisma.availableaccount.findMany({
+    where: {
+      NOT: {
+        accountname: {
+          in: await prisma.account
+            .findMany({
+              select: {
+                account: true,
+              },
+            })
+            .then((rows) => rows.map((row) => row.account)),
         },
       },
-    });
-    res.json(availableAccounts);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal server error");
-  }
+    },
+  });
+  res.json(availableAccounts);
 });
 
 // get jobs
 app.get("/getjobs", async (req, res) => {
-  try {
-    const jobs = await prisma.startjob.findFirst({
-      orderBy: {
-        id: "asc",
-      },
-    });
-    res.json(jobs);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal server error");
-  }
+  const jobs = await prisma.startjob.findFirst({
+    orderBy: {
+      id: "asc",
+    },
+  });
+  res.json(jobs);
 });
 
 // create jobs
 app.post("/createjob", async (req, res) => {
-  try {
-    const { accounttorun, pathtorun, devicename } = req.body.job;
-    const newJob = await prisma.startjob.create({
-      data: {
-        accounttorun: accounttorun,
-        pathtorun: pathtorun,
-        devicename: devicename,
-      },
-    });
-    res.json(newJob);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal server error");
-  }
+  const { accounttorun, pathtorun, devicename } = req.body.job;
+  const newJob = await prisma.startjob.create({
+    data: {
+      accounttorun: accounttorun,
+      pathtorun: pathtorun,
+      devicename: devicename,
+    },
+  });
+  res.json(newJob);
 });
 
 app.delete("/deletejob/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deletedJob = await prisma.startjob.delete({
-      where: {
-        id: Number(id),
-      },
-    });
-    res.json(deletedJob);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal server error");
-  }
+  const { id } = req.params;
+  const deletedJob = await prisma.startjob.delete({
+    where: {
+      id: Number(id),
+    },
+  });
+  res.json(deletedJob);
 });
 
 app.use(function (
@@ -227,8 +206,12 @@ app.use(function (
   res: express.Response,
   next: express.NextFunction
 ) {
-  console.error(req.body, err.stack);
-  res.status(500).send("Something broke!");
+  if (err.type === "request.aborted") {
+    res.status(400).send("Request aborted by the client");
+  } else {
+    console.error(err.stack);
+    res.status(500).send("Something broke!");
+  }
 });
 
 app.listen(Number(port), "0.0.0.0", () => {
