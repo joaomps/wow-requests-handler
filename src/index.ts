@@ -11,8 +11,6 @@ const port = process.env.PORT || 3000;
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: false }));
 app.use(cors());
-// app.use(express.raw({ type: "application/vnd.custom-type" }));
-// app.use(express.text({ type: "text/html" })); removed for now
 
 // get all accounts
 app.get("/accounts", async (req, res) => {
