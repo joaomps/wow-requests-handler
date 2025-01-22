@@ -30,11 +30,3 @@ This is an [ExpressJS](https://expressjs.com/) REST API that uses [Prisma](https
 - Run the Server app `railway run yarn dev`
 
 ## 📝 Notes
-
-This is a simple REST API for todo items. The available routes are
-
-- `GET /todos` gets all todos
-- `POST /todos` creates a new using `text` in the JSON body
-- `GET /todos/:id` gets a todo by id
-- `PUT /todos/:id` updates a todo by id
-- `DELETE /todos/:id` deletes a todo by id
